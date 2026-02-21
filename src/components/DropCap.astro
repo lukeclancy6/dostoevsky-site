@@ -1,0 +1,35 @@
+---
+interface Props {
+  letter: string;
+  class?: string;
+}
+
+const { letter, class: className = '' } = Astro.props;
+---
+
+<span
+  class={`drop-cap-wrapper ${className}`}
+  aria-hidden="true"
+  data-letter={letter}
+>
+  <slot />
+</span>
+
+<style>
+  .drop-cap-wrapper {
+    display: block;
+  }
+
+  :global(.drop-cap-wrapper p:first-of-type::first-letter) {
+    font-family: var(--font-display);
+    font-size: 5.2em;
+    font-weight: 400;
+    color: var(--color-accent-red);
+    float: left;
+    line-height: 0.72;
+    margin-right: 0.08em;
+    margin-top: 0.05em;
+    margin-bottom: -0.05em;
+    padding-bottom: 0.05em;
+  }
+</style>

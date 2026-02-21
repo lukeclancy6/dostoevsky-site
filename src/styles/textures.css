@@ -1,0 +1,141 @@
+/* =============================================================
+   TEXTURES.CSS — Paper effects, ornamental borders, ruled lines
+   ============================================================= */
+
+/* ── Paper texture overlay ── */
+.paper-texture {
+  position: relative;
+}
+
+.paper-texture::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.10'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  opacity: 0.10;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* ── Ornamental horizontal rules ── */
+.ornament-rule {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin: var(--spacing-xl) 0;
+  color: var(--color-accent-tan);
+}
+
+.ornament-rule::before,
+.ornament-rule::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background-color: var(--color-paper-dark);
+}
+
+.ornament-rule-glyph {
+  font-size: 1.4rem;
+  color: var(--color-accent-tan);
+  line-height: 1;
+}
+
+/* Simple paragraph divider */
+.section-break {
+  text-align: center;
+  color: var(--color-accent-tan);
+  font-size: 1.2rem;
+  margin: var(--spacing-xl) 0;
+  letter-spacing: 0.5em;
+  display: block;
+}
+
+/* ── Sidebar border rules ── */
+.sidebar-rule {
+  border: none;
+  border-top: 1px solid var(--color-paper-dark);
+  margin: var(--spacing-md) 0;
+}
+
+/* ── Card / book paper effect ── */
+.book-card {
+  background: var(--color-paper-mid);
+  border: 1px solid var(--color-paper-dark);
+  box-shadow:
+    inset 0 1px 3px rgba(0,0,0,0.06),
+    2px 4px 12px rgba(26,18,9,0.12),
+    4px 8px 24px rgba(26,18,9,0.08);
+  position: relative;
+}
+
+/* Dog-eared corner */
+.book-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(
+    225deg,
+    var(--color-paper-light) 50%,
+    var(--color-paper-dark) 50%
+  );
+  box-shadow: -2px -2px 4px rgba(0,0,0,0.12);
+}
+
+/* ── Ruled line background on card ── */
+.ruled-paper {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent calc(1.8em - 1px),
+    var(--color-paper-dark) calc(1.8em - 1px),
+    var(--color-paper-dark) 1.8em
+  );
+  background-attachment: local;
+}
+
+/* ── Border styles ── */
+.border-top-double {
+  border-top: 3px double var(--color-paper-dark);
+  padding-top: var(--spacing-lg);
+}
+
+.border-bottom-double {
+  border-bottom: 3px double var(--color-paper-dark);
+  padding-bottom: var(--spacing-lg);
+}
+
+/* ── Decorative initial capital wrapper ── */
+.initial-capital {
+  color: var(--color-accent-red);
+  font-family: var(--font-display);
+}
+
+/* ── Perov portrait duotone ── */
+.portrait {
+  filter: sepia(0.3) contrast(1.1);
+  border: 1px solid var(--color-paper-dark);
+  box-shadow: 3px 3px 12px rgba(26,18,9,0.18);
+}
+
+/* ── Page-turn animation ── */
+@keyframes pageReveal {
+  0%   { opacity: 0; filter: blur(2px); transform: translateY(6px); }
+  100% { opacity: 1; filter: blur(0); transform: translateY(0); }
+}
+
+.page-reveal {
+  animation: pageReveal var(--transition-slow) ease forwards;
+}
+
+@keyframes pageFade {
+  0%   { opacity: 1; filter: blur(0); }
+  100% { opacity: 0; filter: blur(2px); }
+}
+
+.page-fade {
+  animation: pageFade 200ms ease forwards;
+}

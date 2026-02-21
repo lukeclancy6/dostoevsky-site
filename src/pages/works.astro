@@ -1,0 +1,234 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import OrnamentalDivider from '../components/OrnamentalDivider.astro';
+
+const works = [
+  {
+    title: "Poor Folk",
+    date: "1846",
+    type: "Novel",
+    note: "My first. A clerk and a seamstress, exchanging letters across a courtyard. I was twenty-four. Belinsky wept. I confess I found this gratifying.",
+    url: "https://www.gutenberg.org/ebooks/2302"
+  },
+  {
+    title: "The Double",
+    date: "1846",
+    type: "Novella",
+    note: "A civil servant encounters his exact double. The double is better at being him than he is. The story was not well received. I maintain it is among my finest work. These two positions are not contradictory.",
+    url: "https://en.wikipedia.org/wiki/The_Double_(Dostoevsky_novel)"
+  },
+  {
+    title: "Notes from the House of the Dead",
+    date: "1862",
+    type: "Novel",
+    note: "Four years in Omsk, recounted through a fictional narrator. The fiction was thin. The men were real. I have never written anything more true, and I have never found anything true more difficult to write.",
+    url: "https://www.gutenberg.org/ebooks/37536"
+  },
+  {
+    title: "Notes from Underground",
+    date: "1864",
+    type: "Novella",
+    note: "The underground man speaks for forty pages without being interrupted. He is spiteful, self-contradictory, and correct about almost everything that matters. I did not agree with him. I understood him completely.",
+    url: "https://www.gutenberg.org/ebooks/600"
+  },
+  {
+    title: "Crime and Punishment",
+    date: "1866",
+    type: "Novel",
+    note: "A psychological account of a murder. Or rather: an account of what happens in the mind before, during, and after. The murder itself takes almost no space. People find this puzzling. I do not.",
+    url: "https://www.gutenberg.org/ebooks/2554"
+  },
+  {
+    title: "The Gambler",
+    date: "1866",
+    type: "Novel",
+    note: "Written in twenty-six days to fulfill a contract while simultaneously writing Crime and Punishment. I hired a stenographer named Anna Grigoryevna to help me. I later married her. The novel is about a man who cannot stop gambling. I was, at the time, such a man.",
+    url: "https://www.gutenberg.org/ebooks/2197"
+  },
+  {
+    title: "The Idiot",
+    date: "1869",
+    type: "Novel",
+    note: "I wanted to portray a truly beautiful man. I discovered, in the writing, that such a man would be destroyed by society. Prince Myshkin is entirely good and entirely helpless. Perhaps these are the same quality.",
+    url: "https://www.gutenberg.org/ebooks/2638"
+  },
+  {
+    title: "Demons",
+    date: "1872",
+    type: "Novel",
+    note: "Based on the Nechaev affair — a student revolutionary murdered by his own circle, in the name of the cause. I was writing about nihilism. I did not anticipate that the century to come would require me to write about it at greater length.",
+    url: "https://www.gutenberg.org/ebooks/8117"
+  },
+  {
+    title: "A Raw Youth",
+    date: "1875",
+    type: "Novel",
+    note: "Arkady Dolgoruky: an illegitimate son, seeking his father, forming himself in public. The least read of my major novels. I believe this is the reader's error, not mine.",
+    url: "https://en.wikipedia.org/wiki/A_Raw_Youth"
+  },
+  {
+    title: "The Brothers Karamazov",
+    date: "1880",
+    type: "Novel",
+    note: "Three brothers. A murdered father. The question of whether God exists and, if not, whether anything remains. I spent three years on it and died four months after it was completed. I intend this as neither coincidence nor symbol. It was simply the book I had to write, and then I wrote it.",
+    url: "https://www.gutenberg.org/ebooks/28054"
+  },
+];
+---
+
+<BaseLayout title="My Works, Such As They Are" description="The major works of Fyodor Dostoevsky, catalogued in his own voice.">
+
+  <div class="works-page">
+
+    <header class="page-header">
+      <p class="section-label">Portfolio</p>
+      <h1 class="page-title">My Works, Such As They Are</h1>
+      <p class="page-intro prose-line">
+        I present them to you not with pride — pride is a sin I have catalogued at length elsewhere — but with the honest acknowledgment that they represent, taken together, approximately what I meant to say. Not precisely. Never precisely. But approximately.
+      </p>
+    </header>
+
+    <OrnamentalDivider variant="hedera" />
+
+    <div class="works-list">
+      {works.map((work) => (
+        <article class="work-entry">
+          <div class="work-meta">
+            <span class="work-date">{work.date}</span>
+            <span class="work-type">{work.type}</span>
+          </div>
+          <h2 class="work-title">
+            <a href={work.url} target="_blank" rel="noopener noreferrer" class="work-link">
+              {work.title}
+            </a>
+          </h2>
+          <p class="work-note">{work.note}</p>
+        </article>
+      ))}
+    </div>
+
+    <OrnamentalDivider variant="asterism" />
+
+    <div class="works-footer prose">
+      <p>
+        There are also shorter pieces — stories, sketches, the journalism of thirty years. The <em>Diary of a Writer</em> alone runs to twelve hundred pages. I mention this not to overwhelm you but to prepare you. The work is large. The questions it addresses are larger. I recommend beginning wherever you find yourself already standing.
+      </p>
+    </div>
+
+  </div>
+
+</BaseLayout>
+
+<style>
+  .works-page {
+    max-width: var(--content-max-ch);
+  }
+
+  .page-header {
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .section-label {
+    font-family: var(--font-label);
+    font-size: var(--font-size-xs);
+    color: var(--color-accent-tan);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .page-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, var(--font-size-3xl));
+    color: var(--color-ink-heading);
+    line-height: var(--line-height-heading);
+    margin-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--color-paper-dark);
+    padding-bottom: var(--spacing-md);
+  }
+
+  .prose-line {
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+    font-style: italic;
+    color: var(--color-ink-secondary);
+    line-height: var(--line-height-body);
+  }
+
+  .works-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .work-entry {
+    padding: var(--spacing-lg) 0;
+    border-bottom: 1px solid var(--color-paper-dark);
+  }
+
+  .work-entry:first-child {
+    padding-top: var(--spacing-sm);
+  }
+
+  .work-meta {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: baseline;
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .work-date {
+    font-family: var(--font-label);
+    font-size: var(--font-size-sm);
+    color: var(--color-accent-red);
+    letter-spacing: 0.08em;
+  }
+
+  .work-type {
+    font-family: var(--font-label);
+    font-size: var(--font-size-xs);
+    color: var(--color-accent-tan);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .work-title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-xl);
+    color: var(--color-ink-heading);
+    margin-bottom: var(--spacing-sm);
+    font-weight: 400;
+    line-height: 1.3;
+  }
+
+  .work-link {
+    color: var(--color-ink-heading);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-paper-dark);
+    transition: color var(--transition-base), border-color var(--transition-base);
+  }
+
+  .work-link:hover {
+    color: var(--color-accent-red);
+    border-bottom-color: var(--color-accent-red);
+    text-decoration: none;
+  }
+
+  .work-note {
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+    color: var(--color-ink-primary);
+    line-height: var(--line-height-body);
+    max-width: 55ch;
+  }
+
+  .works-footer {
+    margin-top: var(--spacing-lg);
+  }
+
+  .prose p {
+    line-height: var(--line-height-body);
+    color: var(--color-ink-primary);
+    font-style: italic;
+  }
+</style>

@@ -1,0 +1,224 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import OrnamentalDivider from '../components/OrnamentalDivider.astro';
+
+const rotatingQuotes = [
+  {
+    text: "Man is a mystery. It needs to be unravelled, and if you spend your whole life unravelling it, don't say that you've wasted time.",
+    attribution: "Letter to Mikhail Dostoevsky, 1839"
+  },
+  {
+    text: "It is not as a child that I believe and confess Christ. My hosanna is born of a furnace of doubt.",
+    attribution: "Notebooks, 1880–81"
+  },
+  {
+    text: "We are all responsible to all for all, apart from our own sins.",
+    attribution: "The Brothers Karamazov, 1880"
+  },
+  {
+    text: "Beauty will save the world.",
+    attribution: "The Idiot, 1869"
+  },
+  {
+    text: "The soul is healed by being with children.",
+    attribution: "The Idiot, 1869"
+  },
+  {
+    text: "To love is to suffer and there can be no love otherwise.",
+    attribution: "Notes from Underground, 1864"
+  },
+];
+---
+
+<BaseLayout title="Dostoevsky" description="The personal site of Fyodor Mikhailovich Dostoevsky — novelist, journalist, and sinner.">
+
+  <div class="homepage">
+
+    <!-- Portrait -->
+    <figure class="portrait-figure">
+      <img
+        src="/perov-dostoevsky-1872.jpg"
+        alt="Vasily Perov's portrait of Fyodor Dostoevsky, 1872. Oil on canvas. Tretyakov Gallery, Moscow."
+        class="portrait"
+        width="800"
+        loading="eager"
+      />
+      <figcaption class="portrait-caption">
+        V. Perov, <em>Portrait of Dostoevsky</em>, 1872<br/>
+        Tretyakov Gallery, Moscow. Public domain.
+      </figcaption>
+    </figure>
+
+    <!-- Opening address with drop cap -->
+    <div class="opening-address prose">
+      <p class="drop-cap-para">
+        You have arrived, and I am glad of it, though I confess I did not expect you — not you in particular, not today, not in this form. I expected no one and I expected everyone, which is how I have always written: addressed to a single reader who does not yet exist, or who has perhaps always existed, waiting somewhere in the future for these exact words to reach him. You are that reader. I am certain of it now.
+      </p>
+
+      <p>
+        My name is Fyodor Mikhailovich Dostoevsky. I was born in Moscow in the year 1821, in the left wing of the Mariinsky Hospital for the Poor, where my father served as staff physician. I have been a soldier, a prisoner, a journalist, an epileptic, a gambler, a husband twice over, and — God willing — a writer of some small consequence. I am dead. This changes nothing. The questions I asked remain open. The reader who could answer them has not yet been born, or has not yet found the courage to answer. Perhaps that reader is you.
+      </p>
+
+      <p>
+        I do not build websites in the ordinary sense. What you see before you is a journal — my journal, my <em>dnevnik</em>, extended into whatever this present moment calls itself. The navigation to your left will take you to my works, to my biography as I choose to tell it, to the diary I published for eleven years in St. Petersburg, and to the essays on faith and philosophy that occupied my last decade. There is also a room of quotations — passages I marked, passages that marked me — and a library of the books I loved before I wrote my own.
+      </p>
+
+      <p>
+        Begin wherever you like. Or press the ornament at the bottom of the menu and let the page decide. I have always believed that the right book finds the reader when the reader is ready. Perhaps the right page works the same way.
+      </p>
+    </div>
+
+    <div style="clear: both;"></div>
+
+    <OrnamentalDivider variant="fleuron" />
+
+    <!-- Rotating pull quote -->
+    <blockquote class="homepage-pull-quote" id="rotating-quote">
+      <p id="rotating-quote-text">Man is a mystery. It needs to be unravelled, and if you spend your whole life unravelling it, don't say that you've wasted time.</p>
+      <footer class="pull-quote-footer">
+        <cite id="rotating-quote-attr">— Letter to Mikhail Dostoevsky, 1839</cite>
+      </footer>
+    </blockquote>
+
+    <OrnamentalDivider variant="asterism" />
+
+    <!-- Secondary text -->
+    <div class="secondary-address prose">
+      <p>
+        A word on what you will not find here. You will not find equivocation. You will not find the careful hedging of a man afraid to offend. I offended everyone in my lifetime — the radicals, the conservatives, the Germans, the French, occasionally the Almighty Himself — and I see no reason to reform now that I am beyond consequence. What you will find is honesty of a particular kind: not the honesty of a man who has nothing to hide, but the honesty of a man who has decided that concealment is more expensive than confession.
+      </p>
+      <p>
+        The soul — <em>dusha</em> — does not improve with varnish. It improves only by being known: first by oneself, which is the most difficult thing, and then, perhaps, by another. That is what literature is for. That is what this is for.
+      </p>
+    </div>
+
+  </div>
+
+</BaseLayout>
+
+<script define:vars={{ rotatingQuotes }}>
+  let currentIndex = Math.floor(Math.random() * rotatingQuotes.length);
+
+  const textEl = document.getElementById('rotating-quote-text');
+  const attrEl = document.getElementById('rotating-quote-attr');
+  const quoteEl = document.getElementById('rotating-quote');
+
+  function updateQuote() {
+    currentIndex = (currentIndex + 1) % rotatingQuotes.length;
+    const q = rotatingQuotes[currentIndex];
+    if (!textEl || !attrEl || !quoteEl) return;
+
+    quoteEl.style.opacity = '0';
+    setTimeout(() => {
+      textEl.textContent = q.text;
+      attrEl.textContent = '— ' + q.attribution;
+      quoteEl.style.opacity = '1';
+    }, 400);
+  }
+
+  setInterval(updateQuote, 8000);
+</script>
+
+<style>
+  .homepage {
+    max-width: var(--content-max-ch);
+  }
+
+  .portrait-figure {
+    float: right;
+    margin: 0 0 var(--spacing-lg) var(--spacing-xl);
+    width: 185px;
+    flex-shrink: 0;
+  }
+
+  .portrait {
+    width: 185px;
+    height: auto;
+    display: block;
+    border: 1px solid var(--color-paper-dark);
+    box-shadow: 3px 3px 12px rgba(26,18,9,0.18);
+    filter: sepia(0.3) contrast(1.1);
+  }
+
+  .portrait-caption {
+    margin-top: var(--spacing-sm);
+    font-family: var(--font-label);
+    font-size: var(--font-size-xs);
+    color: var(--color-ink-secondary);
+    text-align: center;
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+  }
+
+  /* Drop cap on first paragraph */
+  .drop-cap-para::first-letter {
+    font-family: var(--font-display);
+    font-size: 5.2em;
+    font-weight: 400;
+    color: var(--color-accent-red);
+    float: left;
+    line-height: 0.72;
+    margin-right: 0.08em;
+    margin-top: 0.05em;
+    margin-bottom: -0.05em;
+    padding-bottom: 0.05em;
+  }
+
+  .homepage-pull-quote {
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 3vw, var(--font-size-xl));
+    font-style: italic;
+    color: var(--color-ink-heading);
+    text-align: center;
+    padding: var(--spacing-lg) var(--spacing-xl);
+    background: var(--color-paper-mid);
+    border-top: 2px solid var(--color-accent-tan);
+    border-bottom: 2px solid var(--color-accent-tan);
+    margin: var(--spacing-xl) 0;
+    position: relative;
+    line-height: 1.6;
+    transition: opacity 0.4s ease;
+  }
+
+  .homepage-pull-quote::before {
+    content: '\201C';
+    font-size: 4em;
+    color: var(--color-accent-red);
+    line-height: 0;
+    position: absolute;
+    top: 0.6em;
+    left: 0.2em;
+    opacity: 0.5;
+    font-family: var(--font-display);
+  }
+
+  .pull-quote-footer {
+    font-family: var(--font-label);
+    font-size: var(--font-size-sm);
+    color: var(--color-ink-secondary);
+    font-style: normal;
+    margin-top: var(--spacing-md);
+    letter-spacing: 0.06em;
+    display: block;
+  }
+
+  .prose p {
+    margin-bottom: 1.4em;
+  }
+
+  .secondary-address {
+    margin-top: var(--spacing-lg);
+  }
+
+  @media (max-width: 500px) {
+    .portrait-figure {
+      float: none;
+      margin: 0 auto var(--spacing-lg);
+      width: 140px;
+    }
+
+    .portrait {
+      width: 140px;
+    }
+  }
+</style>

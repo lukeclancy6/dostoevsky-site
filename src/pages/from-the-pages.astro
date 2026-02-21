@@ -1,0 +1,355 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import OrnamentalDivider from '../components/OrnamentalDivider.astro';
+import { quotes } from '../data/quotes';
+
+// Server-side: pass all quote data to the client
+const quotesJson = JSON.stringify(quotes);
+const total = quotes.length;
+---
+
+<BaseLayout
+  title="From the Pages"
+  description="Passages from the collected writings of Fyodor Dostoevsky, annotated by the Editor."
+>
+
+  <div class="from-the-pages">
+
+    <header class="page-header">
+      <p class="section-label">From the Pages</p>
+      <h1 class="page-title">From the Pages</h1>
+      <p class="page-subtitle">
+        A weathered volume. Heavily annotated. Leaf through at your own pace.
+      </p>
+    </header>
+
+    <OrnamentalDivider variant="hedera" />
+
+    <!-- The book card -->
+    <article class="quote-card book-card" id="quote-card" role="region" aria-label="Quote reader" aria-live="polite">
+      <div class="quote-card-inner">
+
+        <!-- Page indicator top -->
+        <p class="page-indicator-top" id="page-indicator-top" aria-hidden="true">
+          pg. <span id="current-num">1</span> of {total}
+        </p>
+
+        <!-- Quote body -->
+        <div class="quote-body">
+          <p class="quote-text" id="quote-text"></p>
+          <p class="quote-source" id="quote-source"></p>
+        </div>
+
+        <!-- Annotation divider -->
+        <div class="card-divider" aria-hidden="true">❦</div>
+
+        <!-- Editor annotation -->
+        <div class="annotation-block">
+          <p class="annotation-label">The Editor&rsquo;s Note</p>
+          <p class="quote-annotation" id="quote-annotation"></p>
+        </div>
+
+        <!-- Prev / Next navigation -->
+        <nav class="card-nav" aria-label="Navigate between quotes">
+          <button class="card-nav-btn" id="prev-btn" aria-label="Previous quote" disabled>
+            ◂ <span>Previous</span>
+          </button>
+          <span class="page-counter" id="page-counter" aria-hidden="true">1 / {total}</span>
+          <button class="card-nav-btn" id="next-btn" aria-label="Next quote">
+            <span>Next</span> ▸
+          </button>
+        </nav>
+
+      </div>
+    </article>
+
+  </div>
+
+</BaseLayout>
+
+<script define:vars={{ quotesJson, total }}>
+  const quotes = JSON.parse(quotesJson);
+  let currentIndex = 0;
+
+  const card = document.getElementById('quote-card');
+  const quoteText = document.getElementById('quote-text');
+  const quoteSource = document.getElementById('quote-source');
+  const quoteAnnotation = document.getElementById('quote-annotation');
+  const currentNum = document.getElementById('current-num');
+  const pageCounter = document.getElementById('page-counter');
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+
+  function render(index, animate) {
+    const q = quotes[index];
+    if (!q) return;
+
+    if (animate && card) {
+      // Fade out
+      card.style.opacity = '0';
+      card.style.filter = 'blur(2px)';
+      card.style.transform = 'translateY(4px)';
+
+      setTimeout(() => {
+        updateContent(q, index);
+        card.style.opacity = '1';
+        card.style.filter = 'blur(0)';
+        card.style.transform = 'translateY(0)';
+      }, 200);
+    } else {
+      updateContent(q, index);
+      if (card) {
+        card.style.opacity = '1';
+        card.style.filter = 'blur(0)';
+        card.style.transform = 'translateY(0)';
+      }
+    }
+  }
+
+  function updateContent(q, index) {
+    if (quoteText) quoteText.textContent = q.quote;
+    if (quoteSource) quoteSource.textContent = '— ' + q.source;
+    if (quoteAnnotation) quoteAnnotation.textContent = q.annotation;
+    if (currentNum) currentNum.textContent = String(index + 1);
+    if (pageCounter) pageCounter.textContent = (index + 1) + ' / ' + total;
+
+    // Update button states
+    if (prevBtn) prevBtn.disabled = index === 0;
+    if (nextBtn) nextBtn.disabled = index === total - 1;
+
+    // Update card aria-label
+    if (card) card.setAttribute('aria-label', 'Quote ' + (index + 1) + ' of ' + total);
+  }
+
+  prevBtn?.addEventListener('click', () => {
+    if (currentIndex > 0) {
+      currentIndex--;
+      render(currentIndex, true);
+    }
+  });
+
+  nextBtn?.addEventListener('click', () => {
+    if (currentIndex < total - 1) {
+      currentIndex++;
+      render(currentIndex, true);
+    }
+  });
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      if (currentIndex > 0) { currentIndex--; render(currentIndex, true); }
+    } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      if (currentIndex < total - 1) { currentIndex++; render(currentIndex, true); }
+    }
+  });
+
+  // Initialize (no animation on first load)
+  if (card) {
+    card.style.transition = 'opacity 0.2s ease, filter 0.2s ease, transform 0.2s ease';
+  }
+  render(currentIndex, false);
+</script>
+
+<style>
+  .from-the-pages {
+    max-width: 680px;
+  }
+
+  .page-header {
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .section-label {
+    font-family: var(--font-label);
+    font-size: var(--font-size-xs);
+    color: var(--color-accent-tan);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .page-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, var(--font-size-3xl));
+    color: var(--color-ink-heading);
+    line-height: var(--line-height-heading);
+    margin-bottom: var(--spacing-sm);
+    border-bottom: 1px solid var(--color-paper-dark);
+    padding-bottom: var(--spacing-md);
+  }
+
+  .page-subtitle {
+    font-family: var(--font-body);
+    font-size: var(--font-size-sm);
+    font-style: italic;
+    color: var(--color-ink-secondary);
+  }
+
+  /* Book card */
+  .quote-card {
+    width: 100%;
+    padding: var(--spacing-xl) var(--spacing-xl) var(--spacing-lg);
+    border-radius: 2px;
+    background: var(--color-paper-mid);
+    border: 1px solid var(--color-paper-dark);
+    box-shadow:
+      inset 0 1px 3px rgba(0,0,0,0.06),
+      2px 4px 12px rgba(26,18,9,0.12),
+      4px 8px 24px rgba(26,18,9,0.08);
+    position: relative;
+    transition: opacity 0.2s ease, filter 0.2s ease, transform 0.2s ease;
+    /* Ruled line background */
+    background-image:
+      repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent calc(1.9em - 1px),
+        rgba(217,201,163,0.4) calc(1.9em - 1px),
+        rgba(217,201,163,0.4) 1.9em
+      ),
+      linear-gradient(to bottom, var(--color-paper-mid), var(--color-paper-mid));
+  }
+
+  /* Dog-eared corner */
+  .quote-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(
+      225deg,
+      var(--color-paper-light) 50%,
+      var(--color-paper-dark) 50%
+    );
+    box-shadow: -1px -1px 4px rgba(0,0,0,0.10);
+    pointer-events: none;
+  }
+
+  .quote-card-inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    position: relative;
+    z-index: 1;
+  }
+
+  .page-indicator-top {
+    font-family: var(--font-label);
+    font-size: var(--font-size-xs);
+    color: var(--color-ink-secondary);
+    text-align: right;
+    letter-spacing: 0.1em;
+    margin: 0;
+  }
+
+  .quote-body {
+    min-height: 10em;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .quote-text {
+    font-family: var(--font-body);
+    font-size: 1.15rem;
+    font-style: italic;
+    line-height: 1.95;
+    color: var(--color-ink-primary);
+    margin: 0;
+  }
+
+  .quote-source {
+    font-family: var(--font-label);
+    font-size: var(--font-size-sm);
+    color: var(--color-ink-secondary);
+    letter-spacing: 0.06em;
+    margin: 0;
+  }
+
+  .card-divider {
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--color-accent-tan);
+    border-top: 1px solid var(--color-paper-dark);
+    padding-top: var(--spacing-md);
+  }
+
+  .annotation-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+
+  .annotation-label {
+    font-family: var(--font-label);
+    font-size: var(--font-size-xs);
+    color: var(--color-accent-tan);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .quote-annotation {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: var(--color-ink-secondary);
+    line-height: 1.75;
+    font-style: normal;
+    margin: 0;
+  }
+
+  /* Nav */
+  .card-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--color-paper-dark);
+    margin-top: var(--spacing-sm);
+  }
+
+  .card-nav-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-label);
+    font-size: var(--font-size-sm);
+    color: var(--color-ink-secondary);
+    letter-spacing: 0.06em;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    transition: color var(--transition-base);
+    display: flex;
+    align-items: center;
+    gap: 0.3em;
+  }
+
+  .card-nav-btn:hover:not(:disabled) {
+    color: var(--color-accent-red);
+    cursor: pointer;
+  }
+
+  .card-nav-btn:disabled {
+    opacity: 0.25;
+    cursor: default;
+  }
+
+  .page-counter {
+    font-family: var(--font-label);
+    font-size: var(--font-size-xs);
+    color: var(--color-accent-tan);
+    letter-spacing: 0.1em;
+  }
+
+  @media (max-width: 500px) {
+    .quote-card {
+      padding: var(--spacing-lg) var(--spacing-md) var(--spacing-md);
+    }
+
+    .quote-text {
+      font-size: 1rem;
+    }
+  }
+</style>

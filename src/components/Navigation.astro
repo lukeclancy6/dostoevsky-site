@@ -1,0 +1,62 @@
+---
+const currentPath = Astro.url.pathname;
+
+const pages = [
+  { href: '/',               label: 'An Address to the Reader' },
+  { href: '/works',          label: 'My Works, Such As They Are' },
+  { href: '/bio',            label: 'A Man of My Acquaintance' },
+  { href: '/diary',          label: 'The Diary of a Writer' },
+  { href: '/underground',    label: 'The Underground & The Faith' },
+  { href: '/from-the-pages', label: 'From the Pages' },
+  { href: '/library',        label: 'The Reading Room' },
+];
+
+function isActive(href: string): boolean {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+}
+---
+
+<aside class="sidebar" id="sidebar" role="navigation" aria-label="Main navigation">
+  <a href="/" class="sidebar-title">Fyodor<br/>Dostoevsky</a>
+  <p class="sidebar-subtitle">1821 – 1881</p>
+
+  <hr class="sidebar-rule" />
+
+  <nav>
+    <ul>
+      {pages.map(page => (
+        <li>
+          <a
+            href={page.href}
+            class={isActive(page.href) ? 'active' : ''}
+            aria-current={isActive(page.href) ? 'page' : undefined}
+          >
+            {page.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <button
+      class="random-page-btn"
+      id="random-page-btn"
+      aria-label="Open a random page on this site"
+    >
+      ❦ &nbsp;<em>Open to a Random Page</em>
+    </button>
+  </div>
+</aside>
+
+<script define:vars={{ pages, currentPath }}>
+  const btn = document.getElementById('random-page-btn');
+  if (btn) {
+    btn.addEventListener('click', () => {
+      const available = pages.filter(p => p.href !== currentPath);
+      const target = available[Math.floor(Math.random() * available.length)];
+      if (target) window.location.href = target.href;
+    });
+  }
+</script>

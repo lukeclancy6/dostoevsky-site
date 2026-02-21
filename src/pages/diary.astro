@@ -1,0 +1,182 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import OrnamentalDivider from '../components/OrnamentalDivider.astro';
+
+const entries = [
+  {
+    date: "January 1876. Chapter Two. I.",
+    title: "On the Occasion of This Column",
+    body: [
+      "I have been asked, by various correspondents whose letters I carry in my coat pocket and have not yet answered, to explain the purpose of the Diary of a Writer. What is it? A newspaper column? A journal? An essay? A confession?",
+      "It is all of these, and it is none of them precisely. It is a conversation with a reader I imagine to be intelligent, honest, and not entirely at peace. I write to that reader directly. I do not soften the argument for the squeamish, and I do not dress it up for the fashionable. If the result is sometimes difficult, I can only say: the subjects I am addressing are not easy ones, and a writer who pretends otherwise is not doing you the honor of taking you seriously.",
+      "The column is called the Dnevnik Pisatelya — the Diary of a Writer. It appears monthly. It covers what I think about: Russia, the peasantry, the courts, the nihilists, the children, the church, the literature of the last quarter-century, and the question of whether any of it adds up to something. Sometimes I digress. The digressions are usually the point."
+    ]
+  },
+  {
+    date: "February 1876. Chapter Two. II.",
+    title: "The Peasant Marey",
+    body: [
+      "It was the second day of Easter Week. The air was warm already. I was in the prison barracks in Omsk, lying on my plank bed, my eyes closed, thinking of nothing in particular, when the memory came back to me with the full force of a physical sensation.",
+      "I was nine years old. I was playing in the bushes at the edge of the Chermashnya wood on our estate when suddenly I thought I heard a voice crying 'Wolf!' I screamed and ran toward the nearest field, where a peasant was ploughing. He was a broad, middle-aged man named Marey.",
+      "He looked at me with a kind, motherly smile. 'Don't be frightened, dear,' he said. 'There's no wolf. You imagined it.' He made the sign of the cross over me and touched my cheek with his thick, earth-stained fingers.",
+      "I forgot this entirely for twenty years. I remembered it in the barracks, on Easter morning, surrounded by men who had committed every crime the law enumerated. And I looked at them differently after that. Not with pity — pity is condescending. With something else. With the knowledge that a man who had touched me with such gentleness was not a different species from these men. Was not a different species from me.",
+      "This is what I mean when I say that the Russian people are not to be despaired of. I do not mean they are innocent. I mean they contain, somewhere, Marey."
+    ]
+  },
+  {
+    date: "March 1877. Chapter One. III.",
+    title: "On Children",
+    body: [
+      "A reader writes to ask me whether I have lost hope. I have not. And the reason I have not is the children.",
+      "I watch them in the street — the children of the poor especially, running in the mud with their shoes worn through, laughing at something that would not amuse an adult for a second. There is a boy I see every Tuesday near the Fontanka who is perhaps eight years old and who sells matches. He shouts his price with complete seriousness, as if the transaction were of the first importance. When someone buys from him he counts the coins with extraordinary care. He is already a man, in every respect except that he is not yet ruined.",
+      "It is the adults who require hope. The children do not need it. They are already in possession of something the adults have lost and spend their lives trying to recover — call it what you like: innocence, presence, the capacity to be fully in the moment without commentary. I am not certain it can be recovered once lost. But I am certain the children have it, and that this means the world is not as finished as it sometimes appears."
+    ]
+  },
+];
+---
+
+<BaseLayout title="The Diary of a Writer" description="Monthly dispatches from Fyodor Dostoevsky. Politics, literature, faith, Russia.">
+
+  <div class="diary-page">
+
+    <header class="page-header">
+      <p class="section-label">Dnevnik Pisatelya</p>
+      <h1 class="page-title">The Diary of a Writer</h1>
+      <p class="page-intro">
+        A monthly column. St. Petersburg. 1873–1881.<br />
+        <em>On Russia, on literature, on what it means to be alive at this particular moment.</em>
+      </p>
+    </header>
+
+    <OrnamentalDivider variant="hedera" />
+
+    <div class="diary-entries">
+      {entries.map((entry, i) => (
+        <article class="diary-entry">
+          <header class="entry-header">
+            <p class="entry-date">{entry.date}</p>
+            <h2 class="entry-title">{entry.title}</h2>
+          </header>
+          <div class="prose">
+            {entry.body.map((para, j) => (
+              <p class={i === 0 && j === 0 ? 'drop-cap-para' : ''}>{para}</p>
+            ))}
+          </div>
+          {i < entries.length - 1 && <OrnamentalDivider variant="asterism" />}
+        </article>
+      ))}
+    </div>
+
+    <OrnamentalDivider variant="fleuron" />
+
+    <div class="diary-colophon">
+      <p class="colophon-text">
+        <em>The Diary of a Writer</em> was published monthly by Fyodor Dostoevsky from 1873 to 1881, with interruptions. The full text, in the Kenneth Lantz translation, is available from Northwestern University Press. These pages contain selected entries and new compositions in the same spirit.
+      </p>
+    </div>
+
+  </div>
+
+</BaseLayout>
+
+<style>
+  .diary-page {
+    max-width: var(--content-max-ch);
+  }
+
+  .page-header {
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .section-label {
+    font-family: var(--font-label);
+    font-size: var(--font-size-xs);
+    color: var(--color-accent-tan);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .page-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, var(--font-size-3xl));
+    color: var(--color-ink-heading);
+    line-height: var(--line-height-heading);
+    margin-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--color-paper-dark);
+    padding-bottom: var(--spacing-md);
+  }
+
+  .page-intro {
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+    color: var(--color-ink-secondary);
+    line-height: var(--line-height-body);
+  }
+
+  .diary-entries {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+
+  .diary-entry {
+    padding-bottom: var(--spacing-lg);
+  }
+
+  .entry-header {
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .entry-date {
+    font-family: var(--font-label);
+    font-size: var(--font-size-sm);
+    color: var(--color-accent-red);
+    letter-spacing: 0.08em;
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .entry-title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-xl);
+    color: var(--color-ink-heading);
+    font-weight: 400;
+    line-height: 1.3;
+  }
+
+  .prose p {
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-body);
+    color: var(--color-ink-primary);
+    margin-bottom: 1.4em;
+    max-width: 60ch;
+  }
+
+  .drop-cap-para::first-letter {
+    font-family: var(--font-display);
+    font-size: 5.2em;
+    font-weight: 400;
+    color: var(--color-accent-red);
+    float: left;
+    line-height: 0.72;
+    margin-right: 0.08em;
+    margin-top: 0.05em;
+    margin-bottom: -0.05em;
+    padding-bottom: 0.05em;
+  }
+
+  .diary-colophon {
+    margin-top: var(--spacing-lg);
+  }
+
+  .colophon-text {
+    font-family: var(--font-body);
+    font-size: var(--font-size-sm);
+    font-style: italic;
+    color: var(--color-ink-secondary);
+    line-height: var(--line-height-body);
+    border-top: 1px solid var(--color-paper-dark);
+    padding-top: var(--spacing-lg);
+  }
+</style>

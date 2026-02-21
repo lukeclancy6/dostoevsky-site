@@ -1,0 +1,105 @@
+---
+import Navigation from '../components/Navigation.astro';
+import '../styles/global.css';
+import '../styles/typography.css';
+import '../styles/textures.css';
+import '../styles/layout.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = 'The personal site of Fyodor Mikhailovich Dostoevsky — novelist, journalist, and sinner.'
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <title>{title === 'Dostoevsky' ? title : `${title} — Dostoevsky`}</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+</head>
+
+<body class="paper-texture">
+
+  <!-- Mobile header (visible < 680px) -->
+  <header class="mobile-header" id="mobile-header">
+    <a href="/" class="mobile-site-title">
+      Fyodor Dostoevsky
+    </a>
+    <button
+      class="mobile-nav-toggle"
+      id="mobile-nav-toggle"
+      aria-label="Open navigation menu"
+      aria-expanded="false"
+      aria-controls="sidebar"
+    >
+      <span class="mobile-nav-toggle-label">Menu</span>
+      <span class="mobile-nav-toggle-icon" aria-hidden="true">☰</span>
+    </button>
+  </header>
+
+  <!-- Overlay for mobile drawer -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <div class="site-wrapper">
+    <Navigation />
+
+    <main class="main-content" id="main-content">
+      <slot />
+
+      <footer class="site-footer">
+        <p>
+          The estate of Fyodor Mikhailovich Dostoevsky.<br />
+          First published in St. Petersburg, 1873.<br />
+          This edition prepared by the editors, 2025.
+        </p>
+      </footer>
+    </main>
+  </div>
+
+  <!-- Mobile nav toggle script -->
+  <script>
+    const toggle = document.getElementById('mobile-nav-toggle');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+
+    const toggleIcon = toggle?.querySelector('.mobile-nav-toggle-icon');
+
+    function openNav() {
+      sidebar?.classList.add('open');
+      overlay?.classList.add('open');
+      toggle?.setAttribute('aria-expanded', 'true');
+      if (toggleIcon) toggleIcon.textContent = '✕';
+    }
+
+    function closeNav() {
+      sidebar?.classList.remove('open');
+      overlay?.classList.remove('open');
+      toggle?.setAttribute('aria-expanded', 'false');
+      if (toggleIcon) toggleIcon.textContent = '☰';
+    }
+
+    toggle?.addEventListener('click', () => {
+      if (sidebar?.classList.contains('open')) {
+        closeNav();
+      } else {
+        openNav();
+      }
+    });
+
+    overlay?.addEventListener('click', closeNav);
+
+    // Close on escape
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeNav();
+    });
+  </script>
+</body>
+</html>

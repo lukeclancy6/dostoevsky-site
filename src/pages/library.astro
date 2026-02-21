@@ -1,0 +1,216 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import OrnamentalDivider from '../components/OrnamentalDivider.astro';
+
+const books = [
+  {
+    title: "The Collected Poems of Alexander Pushkin",
+    author: "Alexander Pushkin",
+    note: "The whole edifice. Every time I have been uncertain about what Russian literature is or what it is for, I have returned to Pushkin. He remains ahead of us. He remains ahead of everyone who came after him, including me. This is not a failure of those who came after. It is a measure of what he was.",
+    standing: "Above all others",
+    url: "https://www.gutenberg.org/ebooks/54991"
+  },
+  {
+    title: "The Pickwick Papers",
+    author: "Charles Dickens",
+    note: "I read Dickens in translation during my years in Siberia. He helped. I do not mean this in a sentimental way. I mean: when a man is cold and confined and uncertain whether he will leave the place alive, a novel that insists on the essential decency of the English lower-middle-class is a form of argument. I found it convincing.",
+    standing: "England's greatest",
+    url: "https://www.gutenberg.org/ebooks/580"
+  },
+  {
+    title: "David Copperfield",
+    author: "Charles Dickens",
+    note: "The character who influenced me most: Mr. Micawber. A man who has no practical ability whatsoever, who is perpetually in debt, who makes grand speeches and then is carried away by bailiffs — and who is, nevertheless, somehow loveable, somehow good. I have spent my career writing variations on Micawber. I think this is the right project.",
+    standing: "Most personal",
+    url: "https://www.gutenberg.org/ebooks/766"
+  },
+  {
+    title: "Don Quixote",
+    author: "Miguel de Cervantes",
+    note: "The greatest Christian novel ever written, and it was written by a Spaniard who thought he was writing a comedy. The knight errant who tilts at windmills is not ridiculous. He is the only sane person in a world that has forgotten that goodness exists. I was trying to write something similar when I wrote The Idiot. I did not succeed as well as Cervantes.",
+    standing: "The model",
+    url: "https://www.gutenberg.org/ebooks/996"
+  },
+  {
+    title: "Les Misérables",
+    author: "Victor Hugo",
+    note: "Hugo understood something that the French rationalists could not: that redemption is real, that a man can be changed, that the change is not an illusion or a statistical anomaly but a fact of the same order as any other fact. Jean Valjean is possible. I have met Jean Valjeans in Siberia. This is why the novel works.",
+    standing: "France's true achievement",
+    url: "https://www.gutenberg.org/ebooks/135"
+  },
+  {
+    title: "The Robbers",
+    author: "Friedrich Schiller",
+    note: "I wept over this play at fifteen. I am not embarrassed to say so. Karl Moor — the romantic outlaw who turns brigand in the name of justice — is an adolescent fantasy, and I had an adolescent's response to it. But Schiller's instinct was right: there is something in the human soul that cannot be satisfied by ordinary life, that demands a scale of action the ordinary world cannot provide. My later characters are Karl Moor, grown up and facing consequences.",
+    standing: "First love",
+    url: "https://www.gutenberg.org/ebooks/6782"
+  },
+  {
+    title: "The New Testament",
+    author: "",
+    note: "Natalya Fonvizina gave me a copy at the gates of the Omsk camp in 1850. It was the only book permitted. I have read it many thousands of times since. I am still reading it. I am still uncertain, on certain days, and certain on others, which seems to me the correct way to approach it.",
+    standing: "Always",
+    url: "https://www.gutenberg.org/ebooks/10"
+  },
+];
+---
+
+<BaseLayout title="The Reading Room" description="Books Dostoevsky loved, with his commentary. Pushkin above all.">
+
+  <div class="library-page">
+
+    <header class="page-header">
+      <p class="section-label">The Reading Room</p>
+      <h1 class="page-title">The Reading Room</h1>
+      <p class="page-intro">
+        The books that made me. I mean this literally: without these books, I would have been a different person, and the books I wrote would not exist. Influence is not borrowing. It is transformation. Here is what transformed me.
+      </p>
+    </header>
+
+    <OrnamentalDivider variant="fleuron" />
+
+    <div class="book-list">
+      {books.map((book, i) => (
+        <article class="book-entry">
+          <div class="book-standing">{book.standing}</div>
+          <h2 class="book-title">
+            <a href={book.url} target="_blank" rel="noopener noreferrer" class="book-link">
+              {book.title}
+            </a>
+          </h2>
+          {book.author && <p class="book-author">{book.author}</p>}
+          <p class="book-note">{book.note}</p>
+          {i < books.length - 1 && <div class="entry-separator" aria-hidden="true"></div>}
+        </article>
+      ))}
+    </div>
+
+    <OrnamentalDivider variant="asterism" />
+
+    <div class="library-coda prose">
+      <p>
+        There are others. Balzac, whose energy I envied. Gogol, whose influence I spent twenty years trying to escape and never entirely succeeded. George Sand, in translation, in the early years. The Arabian Nights. Homer, as my father read him aloud.
+      </p>
+      <p>
+        I do not list them all. A library is not a catalog. It is a collection of debts, and the best debts are the ones you cannot fully repay — the ones that keep generating interest, that produce, in time, more than you originally borrowed. All of the books above have produced more than I borrowed from them. I consider this the highest praise.
+      </p>
+    </div>
+
+  </div>
+
+</BaseLayout>
+
+<style>
+  .library-page {
+    max-width: var(--content-max-ch);
+  }
+
+  .page-header {
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .section-label {
+    font-family: var(--font-label);
+    font-size: var(--font-size-xs);
+    color: var(--color-accent-tan);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .page-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, var(--font-size-3xl));
+    color: var(--color-ink-heading);
+    line-height: var(--line-height-heading);
+    margin-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--color-paper-dark);
+    padding-bottom: var(--spacing-md);
+  }
+
+  .page-intro {
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+    font-style: italic;
+    color: var(--color-ink-secondary);
+    line-height: var(--line-height-body);
+  }
+
+  .book-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .book-entry {
+    padding: var(--spacing-lg) 0;
+    position: relative;
+  }
+
+  .book-standing {
+    font-family: var(--font-label);
+    font-size: var(--font-size-xs);
+    color: var(--color-accent-red);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .book-title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-xl);
+    color: var(--color-ink-heading);
+    font-weight: 400;
+    line-height: 1.3;
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .book-link {
+    color: var(--color-ink-heading);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-paper-dark);
+    transition: color var(--transition-base), border-color var(--transition-base);
+  }
+
+  .book-link:hover {
+    color: var(--color-accent-red);
+    border-bottom-color: var(--color-accent-red);
+    text-decoration: none;
+  }
+
+  .book-author {
+    font-family: var(--font-label);
+    font-size: var(--font-size-sm);
+    color: var(--color-ink-secondary);
+    letter-spacing: 0.06em;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .book-note {
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-body);
+    color: var(--color-ink-primary);
+    max-width: 58ch;
+  }
+
+  .entry-separator {
+    height: 1px;
+    background: var(--color-paper-dark);
+    margin-top: var(--spacing-lg);
+  }
+
+  .library-coda {
+    margin-top: var(--spacing-lg);
+  }
+
+  .prose p {
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-body);
+    color: var(--color-ink-primary);
+    margin-bottom: 1.4em;
+    max-width: 58ch;
+    font-style: italic;
+  }
+</style>

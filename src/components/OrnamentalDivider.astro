@@ -1,0 +1,21 @@
+---
+interface Props {
+  glyph?: string;
+  variant?: 'asterism' | 'fleuron' | 'hedera' | 'simple';
+}
+
+const { glyph, variant = 'asterism' } = Astro.props;
+
+const glyphs: Record<string, string> = {
+  asterism: '⁂',
+  fleuron:  '❦',
+  hedera:   '❧',
+  simple:   '✦',
+};
+
+const displayGlyph = glyph ?? glyphs[variant];
+---
+
+<div class="ornament-rule" role="separator" aria-hidden="true">
+  <span class="ornament-rule-glyph">{displayGlyph}</span>
+</div>
